@@ -1,6 +1,6 @@
 // Prachy: uloží aplikaci do mezipaměti, aby šla otevřít i bez internetu.
 // Komunikaci s databází (Supabase) neřeší – ta jde vždy přímo na server.
-const CACHE = "prachy-v3";
+const CACHE = "prachy-v5";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 const CACHE_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 

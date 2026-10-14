@@ -24,7 +24,7 @@
   --up:#B4541F; --down:#2F7D4F;
   --display:"Unbounded", "Arial Black", system-ui, sans-serif;
   --text:"Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --tabbar:68px;
+  --tabbar:68px;--top:58px;
   color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -42,9 +42,9 @@
   --plum:#B88BEA; --plum-soft:#33264A; --on-plum:#140F1B; --gold:#F2C14E; --gold-soft:#3A2F17;
   --up:#F0955F; --down:#6FCB93; color-scheme:dark;
 }
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+html{height:100%;overscroll-behavior:none;scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100%;touch-action:manipulation;overscroll-behavior:none;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
 input{font:inherit;color:inherit}
 :focus-visible{outline:2.5px solid var(--plum);outline-offset:2px;border-radius:10px}
@@ -69,8 +69,10 @@ input{font:inherit;color:inherit}
 .msg.err{background:color-mix(in srgb,var(--up) 14%,var(--surface));color:var(--up)}
 
 /* ---------- Kostra aplikace ---------- */
+body.lock{position:fixed;inset:0;overflow:hidden;width:100%}
+
 .app{max-width:480px;margin:0 auto;padding:0 18px calc(var(--tabbar) + env(safe-area-inset-bottom,0px) + 20px)}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px}
+.topbar{display:flex;align-items:center;justify-content:space-between;height:var(--top)}
 .logo{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-0.03em}
 .logo .coin{width:26px;height:26px;font-size:9px;box-shadow:inset 0 0 0 2.5px color-mix(in srgb,#000 10%,var(--gold))}
 .top-right{display:flex;align-items:center;gap:10px}
@@ -86,32 +88,49 @@ input{font:inherit;color:inherit}
 .tabbtn[aria-selected="true"] .pill{background:var(--plum-soft);color:var(--plum)}
 
 /* ---------- Zapsat ---------- */
-.write{display:flex;flex-direction:column;min-height:calc(100dvh - var(--tabbar) - 70px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
-.display{padding:18px 0 4px;text-align:center}
-.amount{display:flex;align-items:baseline;justify-content:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:-0.045em;line-height:1;min-height:84px}
-.amount #amtNum{font-size:clamp(56px,19vw,80px);transition:font-size .15s}
-.amount.long #amtNum{font-size:clamp(40px,13vw,56px)}
+.write{display:flex;flex-direction:column;overflow:hidden;
+  height:calc(100vh - var(--tabbar) - var(--top) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  height:calc(100dvh - var(--tabbar) - var(--top) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.write .pad,.write .cats,.write .amount{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.display{padding:clamp(4px,2.2vh,18px) 0 0;text-align:center;flex:none}
+.amount{display:flex;width:100%;align-items:center;justify-content:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:-0.045em;line-height:1;height:clamp(60px,11vh,90px);overflow:hidden;white-space:nowrap}
+.amount #amtNum{font-size:min(19vw,9vh,80px)}
 .amount.empty #amtNum{color:var(--line)}
-.amount .kc{font-size:24px;color:var(--muted);letter-spacing:-0.02em}
-.meta{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.amount .kc{flex:none;font-size:24px;color:var(--muted);letter-spacing:-0.02em}
+.meta{display:flex;justify-content:center;gap:8px;margin-top:clamp(6px,1.6vh,16px);flex-wrap:nowrap;height:36px}
 .chip{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);font-size:14px;font-weight:500;color:var(--ink)}
 .chip svg{width:16px;height:16px;color:var(--muted)}
 .chip input[type=date]{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;cursor:pointer}
 .note-input{height:36px;border-radius:18px;border:1.5px solid var(--plum);background:var(--surface);padding:0 14px;font-size:14px;width:min(260px,70vw);outline:none}
-.hint{text-align:center;color:var(--muted);font-size:14px;margin:14px 0 10px;min-height:20px}
+.hint{text-align:center;color:var(--muted);font-size:14px;margin:clamp(6px,1.6vh,14px) 0 clamp(4px,1.2vh,10px);height:20px;flex:none;white-space:nowrap;overflow:hidden}
 
-.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:4px 2px}
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;flex:none}
 .cat{display:flex;flex-direction:column;align-items:center;gap:5px;padding:6px 0 4px;border-radius:14px;font-size:11.5px;font-weight:600;color:var(--ink);transition:opacity .15s,transform .1s}
-.cat .bub{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:color-mix(in srgb,var(--c) 18%,var(--surface));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 30%,transparent)}
+.cat .bub{width:clamp(38px,6vh,48px);height:clamp(38px,6vh,48px);border-radius:50%;display:grid;place-items:center;font-size:22px;background:color-mix(in srgb,var(--c) 18%,var(--surface));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 30%,transparent)}
 .cat:active{transform:scale(.92)}
 .cats.idle .cat:not(.add){opacity:.42}
 .cat.add .bub{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--muted);font-size:20px}
 .cat .lab{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
 
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:auto;padding-top:14px}
-.key{height:58px;border-radius:16px;font-family:var(--display);font-weight:500;font-size:24px;display:grid;place-items:center;transition:background .12s}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,minmax(0,1fr));gap:4px;flex:1 1 auto;min-height:0;max-height:280px;margin-top:auto;padding:clamp(6px,1.5vh,14px) 0 6px}
+.key{height:100%;min-height:0;border-radius:16px;touch-action:manipulation;font-family:var(--display);font-weight:500;font-size:24px;display:grid;place-items:center;transition:background .12s}
 .key:active{background:var(--sunk)}
 .key svg{width:26px;height:26px}
+
+/* Výdaj / Příjem */
+.seg{display:flex;background:var(--sunk);border-radius:14px;padding:3px;gap:2px}
+.seg button{height:32px;padding:0 14px;border-radius:11px;font-size:14px;font-weight:600;color:var(--muted);transition:background .15s,color .15s}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,12,30,.10)}
+.seg button.inc[aria-pressed="true"]{color:var(--down)}
+body.on-write .logo .word{display:none}
+.amount.income #amtNum{color:var(--down)}
+.amount.income #amtNum::before{content:"+";margin-right:.04em}
+.amount.income.empty #amtNum{color:var(--line)}
+.amount.income.empty #amtNum::before{content:""}
+.income-box{flex:none;display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:4px 2px}
+.btn.inc{background:var(--down);color:var(--bg);margin:0;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.inc[disabled]{opacity:.35}
+.btn.inc .ico{font-size:20px}
 
 /* ---------- Přehled ---------- */
 .banner{margin:10px 0 0;background:var(--gold-soft);border-radius:18px;padding:16px}
@@ -129,6 +148,26 @@ input{font:inherit;color:inherit}
 .cmp{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;padding:6px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .cmp b{font-weight:700}
 .cmp.up b{color:var(--up)} .cmp.down b{color:var(--down)}
+.total.pos{color:var(--down)} .total.neg{color:var(--up)}
+.flows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.flow{background:var(--surface);border-radius:18px;padding:12px 14px}
+.flow .k{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.flow .k i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.flow .v{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-0.03em;margin-top:4px}
+.nudge{font-size:14px;color:var(--muted);margin:12px 2px 0}
+.sect .sub-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.sect .sub-h h3{margin:0}
+.trend .pair{display:flex;align-items:flex-end;justify-content:center;gap:3px;width:100%;flex:1;min-height:0}
+.trend .pair .bar{max-width:16px;flex:1}
+.trend .bar.i{background:color-mix(in srgb,var(--down) 35%,var(--sunk))}
+.trend .bar.e{background:color-mix(in srgb,var(--plum) 35%,var(--sunk))}
+.trend .col.on .bar.i{background:var(--down)}
+.trend .col.on .bar.e{background:var(--plum)}
+.trend .amt.pos{color:var(--down)} .trend .amt.neg{color:var(--up)}
+.legend2{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:10px;padding-left:4px}
+.legend2 span{display:flex;align-items:center;gap:6px}
+.legend2 i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.tx-row .a.inc{color:var(--down)}
 
 .stack{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;margin-bottom:18px}
 .stack span{display:block;background:var(--c);min-width:3px}
@@ -163,6 +202,9 @@ input{font:inherit;color:inherit}
 .tx-row .n{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tx-row .a{font-weight:700;font-size:15px}
 .tx-row .del{width:30px;height:30px;border-radius:50%;color:var(--muted);display:grid;place-items:center}
+@media (max-height:660px){:root{--top:48px;--tabbar:60px}.logo{font-size:18px}.avatar{width:34px;height:34px}
+  .hint{display:none}.tabbtn{font-size:11px}.tabbtn .pill{height:26px}
+  .cat .lab{font-size:10.5px}.cat{gap:3px;padding:2px 0}.key{font-size:21px}.meta{height:32px}.chip{height:32px}}
 .tx-row .del svg{width:15px;height:15px}
 .tx-row .del:hover{background:var(--sunk);color:var(--up)}
 .more-btn{display:block;margin:6px auto 0;color:var(--plum);font-weight:600;padding:10px}
@@ -179,7 +221,7 @@ input{font:inherit;color:inherit}
 .sheet .note{font-size:13px;color:var(--muted);margin:14px 0 0}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 
-.toast{position:fixed;left:50%;bottom:calc(var(--tabbar) + 14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:11px 11px 11px 16px;border-radius:16px;display:flex;gap:14px;align-items:center;font-size:15px;transition:transform .22s ease,opacity .22s;max-width:calc(100% - 28px);z-index:10;box-shadow:0 10px 30px rgba(20,12,30,.25)}
+.toast{position:fixed;left:50%;width:max-content;bottom:calc(var(--tabbar) + 14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:11px 11px 11px 16px;border-radius:16px;display:flex;gap:14px;align-items:center;font-size:15px;transition:transform .22s ease,opacity .22s;max-width:calc(100% - 28px);z-index:10;box-shadow:0 10px 30px rgba(20,12,30,.25)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 .toast button{background:color-mix(in srgb,var(--bg) 16%,transparent);color:var(--bg);border-radius:10px;padding:6px 11px;font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -208,7 +250,8 @@ input{font:inherit;color:inherit}
 <div id="appView" hidden>
   <div class="app">
     <header class="topbar">
-      <div class="logo"><span class="coin" aria-hidden="true">Kč</span>Prachy</div>
+      <div class="logo"><span class="coin" aria-hidden="true">Kč</span><span class="word">Prachy</span></div>
+      <div class="seg" id="seg" role="group" aria-label="Typ záznamu"><button type="button" id="segExp" aria-pressed="true">Výdaj</button><button type="button" class="inc" id="segInc" aria-pressed="false">Příjem</button></div>
       <div class="top-right"><span class="sync" id="sync"></span><button class="avatar" id="menuBtn" aria-label="Účet a záloha">?</button></div>
     </header>
 
@@ -224,6 +267,7 @@ input{font:inherit;color:inherit}
       </div>
       <p class="hint" id="hint"></p>
       <div class="cats idle" id="cats"></div>
+      <div class="income-box" id="incomeBox" hidden><button class="btn inc" id="incomeBtn" type="button" disabled><span class="ico">💰</span>Přidat příjem</button></div>
       <div class="pad" id="pad" aria-label="Číselná klávesnice"></div>
     </section>
 
@@ -236,8 +280,8 @@ input{font:inherit;color:inherit}
         <button class="round" id="next" aria-label="Další měsíc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
       <div id="summary"></div>
-      <div class="sect"><h3>Posledních 6 měsíců</h3><div class="trend" id="trend"></div></div>
-      <div class="sect"><h3>Útraty</h3><div id="list"></div></div>
+      <div class="sect"><h3>Posledních 6 měsíců</h3><div class="trend" id="trend"></div><div class="legend2"><span><i style="--c:var(--down)"></i>Příjmy</span><span><i style="--c:var(--plum)"></i>Výdaje</span></div></div>
+      <div class="sect"><h3>Pohyby</h3><div id="list"></div></div>
     </section>
   </div>
 
@@ -306,7 +350,10 @@ function dayLabel(ds){
 }
 function shortDate(ds){if(ds===today())return "Dnes";if(ds===yesterday())return "Včera";const [y,m,d]=ds.split("-").map(Number);return d+". "+m+"."+(y!==new Date().getFullYear()?" "+y:"")}
 function allCats(){return BASE_CATS.concat(customCats)}
-function catById(id){return allCats().find(c=>c.id===id)||{id,name:id,ico:"•",c:"#8A8199"}}
+const INCOME={id:"prijem",name:"Příjem",ico:"💰",c:"#2F9E5B"};
+const isInc=e=>e.cat==="prijem";
+let kind="exp";
+function catById(id){if(id==="prijem")return INCOME;return allCats().find(c=>c.id===id)||{id,name:id,ico:"•",c:"#8A8199"}}
 function parseAmount(){const v=parseFloat(amt.replace(",","."));return isFinite(v)&&v>0&&v<1e9?Math.round(v*100)/100:null}
 function newId(){return (crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2))}
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
@@ -403,6 +450,9 @@ function importList(list,custom){
 function setTab(t){
   const w=t==="write";
   $("tabWrite").hidden=!w;$("tabStats").hidden=w;
+  document.body.classList.toggle("lock",w);
+  document.body.classList.toggle("on-write",w);
+  $("seg").hidden=!w;
   $("tbWrite").setAttribute("aria-selected",w);$("tbStats").setAttribute("aria-selected",!w);
   if(!w){render()}
   window.scrollTo(0,0);
@@ -417,6 +467,7 @@ function buildPad(){
   keys.forEach(k=>{
     const b=document.createElement("button");b.className="key";b.type="button";
     if(k==="del"){b.innerHTML=ICON_BACK;b.setAttribute("aria-label","Smazat číslici")}else b.textContent=k;
+    b.addEventListener("pointerdown",ev=>ev.preventDefault());
     b.onclick=()=>press(k);pad.appendChild(b);
   });
 }
@@ -430,16 +481,28 @@ function press(k){
   }
   updateAmount();
 }
+function fitAmount(){
+  const el=$("amount"),n=$("amtNum");
+  n.style.fontSize="";
+  const avail=el.clientWidth-4;
+  if(el.scrollWidth>avail){const base=parseFloat(getComputedStyle(n).fontSize);n.style.fontSize=Math.max(22,Math.floor(base*avail/el.scrollWidth*0.97))+"px"}
+}
+window.addEventListener("resize",fitAmount);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAmount);
 function updateAmount(){
   const el=$("amount");
   let [i,d]=amt.split(",");
   const shown=amt?((i||"0").replace(/\B(?=(\d{3})+(?!\d))/g,"\u202F")+(d!==undefined?","+d:"")):"0";
   $("amtNum").textContent=shown;
   el.classList.toggle("empty",!amt);
-  el.classList.toggle("long",shown.length>7);
+  fitAmount();
   const ok=parseAmount()!==null;
+  el.classList.toggle("income",kind==="inc");
   $("cats").classList.toggle("idle",!ok);
-  $("hint").textContent=ok?"Na co to bylo? Ťukni na kategorii.":"Zadej částku";
+  $("incomeBtn").disabled=!ok;
+  $("hint").textContent=kind==="inc"
+    ?(ok?"Můžeš přidat poznámku, třeba výplata.":"Zadej částku příjmu")
+    :(ok?"Na co to bylo? Ťukni na kategorii.":"Zadej částku");
 }
 document.addEventListener("keydown",e=>{
   if($("appView").hidden||$("tabWrite").hidden||!$("scrim").hidden)return;
@@ -451,11 +514,21 @@ document.addEventListener("keydown",e=>{
 
 /* Poznámka a datum */
 $("noteChip").onclick=()=>{$("noteChip").hidden=true;$("note").hidden=false;$("note").focus()};
-$("note").addEventListener("blur",()=>{const v=$("note").value.trim();$("note").hidden=true;$("noteChip").hidden=false;$("noteLabel").textContent=v?(v.length>18?v.slice(0,18)+"…":v):"Poznámka"});
+$("note").addEventListener("blur",()=>{window.scrollTo(0,0);const v=$("note").value.trim();$("note").hidden=true;$("noteChip").hidden=false;$("noteLabel").textContent=v?(v.length>18?v.slice(0,18)+"…":v):"Poznámka"});
 $("note").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 $("date").addEventListener("click",()=>{try{$("date").showPicker()}catch(e){}});
 $("date").addEventListener("change",()=>{if(!$("date").value)$("date").value=today();$("dateLabel").textContent=shortDate($("date").value)});
 
+function setKind(k){
+  kind=k;
+  $("segExp").setAttribute("aria-pressed",k==="exp");$("segInc").setAttribute("aria-pressed",k==="inc");
+  $("cats").hidden=(k==="inc");$("incomeBox").hidden=(k!=="inc");
+  $("note").placeholder=k==="inc"?"Odkud? (výplata, prodej…)":"Za co to bylo?";
+  updateAmount();
+}
+$("segExp").onclick=()=>setKind("exp");
+$("segInc").onclick=()=>setKind("inc");
+$("incomeBtn").onclick=()=>addExpense("prijem");
 function renderCats(){
   const box=$("cats");box.innerHTML="";
   allCats().forEach(c=>{
@@ -478,7 +551,8 @@ function addExpense(catId){
   amt="";$("note").value="";$("noteLabel").textContent="Poznámka";$("date").value=today();$("dateLabel").textContent="Dnes";
   viewMonth=date.slice(0,7);showAll=false;updateAmount();
   if(navigator.vibrate)try{navigator.vibrate(12)}catch(_){}
-  toast("Uloženo "+fmt(amount)+" – "+catById(catId).name,true);
+  if(catId==="prijem"){toast("Přidán příjem +"+fmt(amount),true);setKind("exp")}
+  else toast("Uloženo "+fmt(amount)+" – "+catById(catId).name,true);
 }
 function toast(msg,undo){
   $("toastMsg").textContent=msg;$("undo").style.display=undo?"":"none";
@@ -494,64 +568,93 @@ function addCategory(){
 
 /* ---------- Přehled ---------- */
 function sumBy(month){
-  const m={};let total=0,count=0;
-  expenses.forEach(e=>{if(e.date.slice(0,7)===month){m[e.cat]=(m[e.cat]||0)+e.amount;total+=e.amount;count++}});
-  return {m,total,count};
+  const m={};let total=0,count=0,income=0;
+  expenses.forEach(e=>{if(e.date.slice(0,7)!==month)return;
+    if(isInc(e)){income+=e.amount;return}
+    m[e.cat]=(m[e.cat]||0)+e.amount;total+=e.amount;count++});
+  return {m,total,count,income};
 }
+const signed=n=>(n>0?"+":n<0?"−":"")+fmt0(Math.abs(n));
+const compact=n=>{const a=Math.abs(n),s=n>0?"+":n<0?"−":"";
+  if(a>=10000)return s+Math.round(a/1000)+" tis.";
+  if(a>=1000)return s+(a/1000).toFixed(1).replace(".",",")+" tis.";
+  return s+Math.round(a)};
 function render(){
   const cur=monthKey(new Date());
   $("monthTitle").textContent=monthName(viewMonth);
   $("next").disabled=viewMonth>=cur;
-  const {m,total,count}=sumBy(viewMonth);
+  const {m,total,income}=sumBy(viewMonth);
+  const bal=income-total;
   const rows=Object.entries(m).sort((a,b)=>b[1]-a[1]);
   const sum=$("summary");sum.innerHTML="";
+
+  // Bilance
   const hero=document.createElement("div");hero.className="hero";
-  const prev=sumBy(shiftMonth(viewMonth,-1)).total;
-  let cmp="";
-  if(prev>0&&total>0){
-    const pct=Math.round((total-prev)/prev*100);
-    cmp=pct===0?`<span class="cmp">Stejně jako ${monthLocative(shiftMonth(viewMonth,-1))}</span>`
-      :`<span class="cmp ${pct>0?"up":"down"}"><b>${pct>0?"↑":"↓"} ${Math.abs(pct)} %</b> oproti ${monthLocative(shiftMonth(viewMonth,-1)).replace(/^v /,"")}</span>`;
-  }
-  hero.innerHTML=`<div class="label">${viewMonth===cur?"Tento měsíc jsi utratil":"Utraceno"}</div><div class="total num">${fmt0(total)}<small>Kč</small></div>${cmp}`;
+  const isCur=viewMonth===cur;
+  const label=bal>0?(isCur?"Tento měsíc jsi v plusu":"Měsíc skončil v plusu"):bal<0?(isCur?"Tento měsíc jsi v minusu":"Měsíc skončil v minusu"):"Bilance měsíce";
+  hero.innerHTML=`<div class="label">${label}</div><div class="total num ${bal>0?"pos":bal<0?"neg":""}">${signed(bal)}<small>Kč</small></div>
+    <div class="flows">
+      <div class="flow" style="--c:var(--down)"><div class="k"><i></i>Příjmy</div><div class="v num">${fmt0(income)} Kč</div></div>
+      <div class="flow" style="--c:var(--plum)"><div class="k"><i></i>Výdaje</div><div class="v num">${fmt0(total)} Kč</div></div>
+    </div>${income===0?'<p class="nudge">Příjem přidáš v záložce Zapsat přepnutím nahoře na „Příjem“.</p>':""}`;
   sum.appendChild(hero);
+
+  // Výdaje podle kategorií
   if(rows.length){
+    const sec=document.createElement("div");sec.className="sect";sec.style.marginTop="14px";
+    const prev=sumBy(shiftMonth(viewMonth,-1)).total;
+    let cmp="";
+    if(prev>0&&total>0){
+      const pct=Math.round((total-prev)/prev*100);
+      cmp=pct===0?`<span class="cmp">Stejně jako ${monthLocative(shiftMonth(viewMonth,-1))}</span>`
+        :`<span class="cmp ${pct>0?"up":"down"}"><b>${pct>0?"↑":"↓"} ${Math.abs(pct)} %</b> oproti ${monthLocative(shiftMonth(viewMonth,-1)).replace(/^v /,"")}</span>`;
+    }
+    sec.innerHTML=`<div class="sub-h"><h3>Výdaje podle kategorií</h3>${cmp}</div>`;
     const st=document.createElement("div");st.className="stack";
-    rows.forEach(([id,v])=>{const s=document.createElement("span");s.style.setProperty("--c",catById(id).c);s.style.flex=String(v);st.appendChild(s)});
-    sum.appendChild(st);
+    rows.forEach(([id,v])=>{const sp=document.createElement("span");sp.style.setProperty("--c",catById(id).c);sp.style.flex=String(v);st.appendChild(sp)});
+    sec.appendChild(st);
     const ul=document.createElement("ul");ul.className="breakdown";
     const top=rows[0][1];
     rows.forEach(([id,v])=>{const c=catById(id);const li=document.createElement("li");li.style.setProperty("--c",c.c);
       li.innerHTML=`<span class="bub"></span><div><div class="nm"><b></b><span>${Math.round(v/total*100)} %</span></div><div class="track"><i style="width:${(v/top*100).toFixed(1)}%"></i></div></div><span class="v num">${fmt(v)}</span>`;
       li.querySelector(".bub").textContent=c.ico;li.querySelector("b").textContent=c.name;ul.appendChild(li)});
-    sum.appendChild(ul);
+    sec.appendChild(ul);
+    sum.appendChild(sec);
   }
-  // trend
+
+  // 6 měsíců: příjmy vs výdaje
   const months=[];for(let i=5;i>=0;i--)months.push(shiftMonth(viewMonth>cur?cur:viewMonth,-i));
-  const totals=months.map(k=>sumBy(k).total),max=Math.max(...totals,1);
+  const data=months.map(k=>sumBy(k));
+  const max=Math.max(...data.map(d=>Math.max(d.total,d.income)),1);
   const tr=$("trend");tr.innerHTML="";
-  months.forEach((k,i)=>{const b=document.createElement("button");b.className="col"+(k===viewMonth?" on":"");
-    b.setAttribute("aria-label",monthName(k)+": "+fmt(totals[i]));
-    b.innerHTML=`<span class="amt num">${totals[i]?fmt0(totals[i]):""}</span><span class="bar" style="height:${Math.max(totals[i]/max*72,3)}%"></span><span class="lbl">${monthName(k,true)}</span>`;
-    b.onclick=()=>{viewMonth=k;showAll=false;render()};tr.appendChild(b)});
-  // seznam
+  months.forEach((k,i)=>{const d=data[i],b=d.income-d.total;const col=document.createElement("button");col.className="col"+(k===viewMonth?" on":"");
+    col.setAttribute("aria-label",monthName(k)+": příjmy "+fmt(d.income)+", výdaje "+fmt(d.total));
+    col.innerHTML=`<span class="amt num ${b>0?"pos":b<0?"neg":""}">${(d.income||d.total)?compact(b):""}</span><span class="pair"><span class="bar i" style="height:${Math.max(d.income/max*100,3)}%"></span><span class="bar e" style="height:${Math.max(d.total/max*100,3)}%"></span></span><span class="lbl">${monthName(k,true)}</span>`;
+    col.onclick=()=>{viewMonth=k;showAll=false;render()};tr.appendChild(col)});
+
+  // Seznam
   const items=expenses.filter(e=>e.date.slice(0,7)===viewMonth).sort((a,b)=>b.date.localeCompare(a.date)||b.ts-a.ts);
   const list=$("list");list.innerHTML="";
-  if(!items.length){list.innerHTML='<div class="empty"><strong>Zatím prázdno</strong>V záložce Zapsat přidáš první útratu.</div>';return}
+  if(!items.length){list.innerHTML='<div class="empty"><strong>Zatím prázdno</strong>V záložce Zapsat přidáš první útratu nebo příjem.</div>';return}
   const shown=showAll?items:items.slice(0,25);
   const days={};shown.forEach(e=>{(days[e.date]=days[e.date]||[]).push(e)});
   Object.keys(days).sort().reverse().forEach(ds=>{
-    const dayTotal=items.filter(e=>e.date===ds).reduce((s,e)=>s+e.amount,0);
+    const dayItems=items.filter(e=>e.date===ds);
+    const exp=dayItems.filter(e=>!isInc(e)).reduce((s,e)=>s+e.amount,0);
+    const inc=dayItems.filter(isInc).reduce((s,e)=>s+e.amount,0);
+    const head=inc?signed(inc-exp)+" Kč":fmt(exp);
     const wrap=document.createElement("div");wrap.className="day";
-    wrap.innerHTML=`<div class="day-h"><span></span><span class="num">${fmt(dayTotal)}</span></div><div class="tx"></div>`;
+    wrap.innerHTML=`<div class="day-h"><span></span><span class="num"></span></div><div class="tx"></div>`;
     wrap.querySelector(".day-h span").textContent=dayLabel(ds);
+    wrap.querySelector(".day-h .num").textContent=head;
     const tx=wrap.querySelector(".tx");
     days[ds].forEach(e=>{const c=catById(e.cat);const r=document.createElement("div");r.className="tx-row";r.style.setProperty("--c",c.c);
       r.innerHTML=`<span class="bub"></span><div style="min-width:0"><div class="t"></div><div class="n"></div></div><span class="a num"></span><button class="del" aria-label="Smazat">${ICON_X}</button>`;
       r.querySelector(".bub").textContent=c.ico;r.querySelector(".t").textContent=c.name;
       const n=r.querySelector(".n");if(e.note)n.textContent=e.note;else n.remove();
-      r.querySelector(".a").textContent=fmt(e.amount);
-      r.querySelector(".del").onclick=()=>{if(confirm("Smazat "+fmt(e.amount)+" ("+c.name+")?"))removeLocal(e.id)};
+      const a=r.querySelector(".a");
+      if(isInc(e)){a.textContent="+"+fmt(e.amount);a.classList.add("inc")}else a.textContent=fmt(e.amount);
+      r.querySelector(".del").onclick=()=>{if(confirm("Smazat "+(isInc(e)?"příjem ":"")+fmt(e.amount)+(isInc(e)?"":" ("+c.name+")")+"?"))removeLocal(e.id)};
       tx.appendChild(r)});
     list.appendChild(wrap);
   });
@@ -639,7 +742,7 @@ $("logout").onclick=async()=>{
   $("scrim").hidden=true;await sb.auth.signOut();
 };
 
-function showAuth(){user=null;$("appView").hidden=true;$("scrim").hidden=true;$("authView").hidden=false;setMode("login")}
+function showAuth(){document.body.classList.remove("lock");user=null;$("appView").hidden=true;$("scrim").hidden=true;$("authView").hidden=false;setMode("login")}
 function startApp(u){
   if(!u)return showAuth();
   if(user&&user.id===u.id&&!$("appView").hidden)return;
