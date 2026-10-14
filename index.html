@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Útraty</title>
+<title>Prachy</title>
+<meta name="description" content="Prachy – zapiš útratu dvěma ťuknutími a sleduj, kam ti mizí peníze.">
 <meta name="theme-color" content="#2E4BE0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Útraty">
+<meta name="apple-mobile-web-app-title" content="Prachy">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
@@ -38,9 +39,28 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
-main{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+main{max-width:560px;margin:0 auto;padding:12px 16px 40px}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+
+.top{display:flex;align-items:baseline;justify-content:space-between;margin:4px 2px 12px}
+.brand{font-weight:800;font-size:26px;letter-spacing:-0.03em;margin:0}
+.sync{font-size:13px;color:var(--muted)}
+
+/* Auth */
+.auth{max-width:420px;margin:8vh auto 0;padding:0 4px}
+.auth .brand{font-size:56px;line-height:1}
+.auth .lead{color:var(--muted);margin:10px 0 26px;font-size:17px}
+.field{display:block;margin-bottom:12px}
+.field span{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.field input{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 13px}
+.btn{width:100%;border:0;border-radius:14px;padding:14px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:17px;margin-top:6px}
+.btn[disabled]{opacity:.6}
+.link{border:0;background:none;color:var(--accent);font-weight:600;padding:8px 0;font-size:15px}
+.auth-links{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px}
+.msg{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:15px}
+.msg.err{border-color:var(--danger);color:var(--danger)}
 
 /* Entry */
 .entry{background:var(--surface);border-radius:22px;padding:18px 18px 16px;border:1px solid var(--line)}
@@ -58,6 +78,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .cat.add{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
 .more{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
 .more input{flex:1 1 140px;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+
+.banner{margin-top:14px;background:var(--surface);border:1.5px solid var(--accent);border-radius:16px;padding:14px}
+.banner p{margin:0 0 10px}
+.banner .btn{margin:0;padding:11px;font-size:15px}
 
 /* Overview */
 .month-nav{display:flex;align-items:center;justify-content:space-between;margin:28px 2px 10px}
@@ -99,18 +123,39 @@ h3{font-size:16px;margin:24px 2px 10px;font-weight:600}
 .del:hover{color:var(--danger)}
 .show-all{margin-top:8px;border:0;background:none;color:var(--accent);font-weight:600;padding:6px 0}
 
-.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:var(--ink);color:var(--bg);padding:12px 12px 12px 16px;border-radius:14px;display:flex;gap:14px;align-items:center;font-size:15px;transition:transform .25s ease;max-width:calc(100% - 24px);z-index:10}
+.account{margin-top:30px;text-align:center;color:var(--muted);font-size:14px}
+.account .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.account .row button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;font-size:14px;font-weight:600}
+
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);background:var(--ink);color:var(--bg);padding:12px 12px 12px 16px;border-radius:14px;display:flex;gap:14px;align-items:center;font-size:15px;transition:transform .25s ease;max-width:calc(100% - 24px);z-index:10}
 .toast.show{transform:translate(-50%,0)}
 .toast button{border:0;background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg);border-radius:9px;padding:6px 10px;font-weight:600}
-.backup{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.backup button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;font-size:14px;font-weight:600}
-.status{font-size:12px;color:var(--muted);text-align:center;margin-top:22px}
 @media (max-width:380px){.donut-wrap{grid-template-columns:1fr;justify-items:center}.legend{width:100%}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<main>
+
+<!-- Přihlášení -->
+<section class="auth" id="authView" hidden>
+  <h1 class="brand">Prachy</h1>
+  <p class="lead">Zapiš útratu dvěma ťuknutími a na konci měsíce uvidíš, kam ti peníze odešly.</p>
+  <form id="authForm" novalidate>
+    <label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="email" required></label>
+    <label class="field" id="passField"><span>Heslo</span><input id="password" type="password" autocomplete="current-password" minlength="6" required></label>
+    <button class="btn" id="authBtn" type="submit">Přihlásit se</button>
+  </form>
+  <div class="auth-links">
+    <button class="link" id="toggleMode" type="button">Nemám účet – vytvořit</button>
+    <button class="link" id="forgot" type="button">Zapomenuté heslo</button>
+  </div>
+  <p class="msg" id="authMsg" hidden></p>
+</section>
+
+<!-- Aplikace -->
+<main id="appView" hidden>
+  <div class="top"><h1 class="brand">Prachy</h1><span class="sync" id="sync"></span></div>
+
   <section class="entry" aria-label="Nová útrata">
     <label class="amount-row" for="amount">
       <input id="amount" inputmode="decimal" autocomplete="off" placeholder="0" aria-label="Částka v Kč">
@@ -123,6 +168,11 @@ h3{font-size:16px;margin:24px 2px 10px;font-weight:600}
       <input id="date" type="date" aria-label="Datum">
     </div>
   </section>
+
+  <div class="banner" id="migrate" hidden>
+    <p id="migrateText"></p>
+    <button class="btn" id="migrateBtn">Přenést do účtu</button>
+  </div>
 
   <div class="month-nav">
     <button class="nav-btn" id="prev" aria-label="Předchozí měsíc">‹</button>
@@ -137,18 +187,25 @@ h3{font-size:16px;margin:24px 2px 10px;font-weight:600}
   <h3>Útraty v měsíci</h3>
   <section class="panel"><ul class="list" id="list"></ul><div id="listMore"></div></section>
 
-  <h3>Záloha</h3>
-  <p class="status" style="margin:0 2px;text-align:left">Data jsou uložená jen v tomto prohlížeči. Občas si stáhni zálohu, ať o nic nepřijdeš při výměně telefonu nebo vymazání prohlížeče.</p>
-  <div class="backup">
-    <button id="exportBtn">Stáhnout zálohu</button>
-    <button id="importBtn">Nahrát zálohu</button>
+  <section class="account">
+    <div>Přihlášen jako <strong id="who"></strong></div>
+    <div class="row">
+      <button id="exportBtn">Stáhnout zálohu</button>
+      <button id="importBtn">Nahrát zálohu</button>
+      <button id="logout">Odhlásit</button>
+    </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
-  </div>
-  <p class="status" id="status"></p>
+  </section>
 </main>
+
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="undo">Zpět</button></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
 <script>
+const SUPABASE_URL = "https://vuhoarbcctbutwqxlaqr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_6X2GeQi-pUPiACNFlFpgwg_zDOdyT6V";
+const APP_URL = location.origin + location.pathname;
+
 const BASE_CATS = [
   {id:"jidlo", name:"Jídlo", ico:"🍽️", c:"#E0662E"},
   {id:"potraviny", name:"Potraviny", ico:"🛒", c:"#3E9B4F"},
@@ -160,36 +217,109 @@ const BASE_CATS = [
   {id:"ostatni", name:"Ostatní", ico:"📦", c:"#7C8798"}
 ];
 const EXTRA_COLORS = ["#B5523B","#4E7F2A","#8E44AD","#E67E22","#16A085","#C0392B","#2C3E90"];
-let customCats = [];
-let expenses = [];          // {id, amount, cat, note, date:"YYYY-MM-DD", ts}
-let viewMonth = monthKey(new Date());
-let showAll = false;
-let store = null;           // abstraction over db / localStorage
 
-const fmt = n => new Intl.NumberFormat("cs-CZ",{maximumFractionDigits:2}).format(n) + " Kč";
+let sb = null, user = null;
+let customCats = [], expenses = [], pending = [];
+let viewMonth = monthKey(new Date()), showAll = false, flushing = false;
+
 const $ = id => document.getElementById(id);
+const fmt = n => new Intl.NumberFormat("cs-CZ",{maximumFractionDigits:2}).format(n) + " Kč";
 function monthKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
 function today(){const d=new Date();return monthKey(d)+"-"+String(d.getDate()).padStart(2,"0")}
 function shiftMonth(key,delta){const [y,m]=key.split("-").map(Number);return monthKey(new Date(y,m-1+delta,1))}
 function monthName(key,short){const [y,m]=key.split("-").map(Number);return new Date(y,m-1,1).toLocaleDateString("cs-CZ",short?{month:"short"}:{month:"long",year:"numeric"})}
 function allCats(){return BASE_CATS.concat(customCats)}
 function catById(id){return allCats().find(c=>c.id===id)||{id,name:id,ico:"•",c:"#7C8798"}}
-function parseAmount(){const v=parseFloat($("amount").value.replace(/\s/g,"").replace(",","."));return isFinite(v)&&v>0?Math.round(v*100)/100:null}
+function parseAmount(){const v=parseFloat($("amount").value.replace(/\s/g,"").replace(",","."));return isFinite(v)&&v>0&&v<1e9?Math.round(v*100)/100:null}
+function newId(){return (crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2))}
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function validExpense(e){return e&&typeof e.id==="string"&&e.id.length<=64&&typeof e.amount==="number"&&e.amount>0&&typeof e.cat==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)}
 
-/* ---------- Storage ---------- */
-const LS_KEY="utraty-v1";
-function lsStore(){
-  const load=()=>{try{return JSON.parse(localStorage.getItem(LS_KEY))||{expenses:[],custom:[]}}catch(e){return {expenses:[],custom:[]}}};
-  const save=s=>{try{localStorage.setItem(LS_KEY,JSON.stringify(s))}catch(e){}};
-  return {
-    kind:"local",
-    start(){const s=load();expenses=s.expenses;customCats=s.custom;render()},
-    async add(e){const s=load();s.expenses.push(e);save(s);expenses=s.expenses;render()},
-    async remove(id){const s=load();s.expenses=s.expenses.filter(x=>x.id!==id);save(s);expenses=s.expenses;render()},
-    async saveCustom(list){const s=load();s.custom=list;save(s);customCats=list;render()}
-  };
+/* ---------- Data & synchronizace ---------- */
+const kPending=()=> "prachy-pending-"+user.id;
+const kCache=()=> "prachy-cache-"+user.id;
+function savePending(){lsSet(kPending(),pending);updateSync()}
+function saveCache(){lsSet(kCache(),{expenses,custom:customCats})}
+function updateSync(){
+  const n=pending.length;
+  $("sync").textContent=n?("Čeká na odeslání: "+n):(navigator.onLine?"":"Offline");
 }
-/* ---------- Entry ---------- */
+function applyPending(list){
+  let out=list.slice();
+  pending.forEach(op=>{
+    if(op.type==="add"){if(!out.some(e=>e.id===op.row.id))out.push(op.row)}
+    else out=out.filter(e=>e.id!==op.id);
+  });
+  return out;
+}
+async function loadAll(){
+  let all=[],from=0;
+  while(true){
+    const {data,error}=await sb.from("expenses").select("id,amount,cat,note,date,ts").order("ts",{ascending:false}).range(from,from+999);
+    if(error)throw error;
+    all=all.concat(data);
+    if(data.length<1000)break;
+    from+=1000;
+  }
+  const {data:c,error:ce}=await sb.from("categories").select("custom").maybeSingle();
+  if(ce)throw ce;
+  return {expenses:all.map(r=>({id:r.id,amount:Number(r.amount),cat:r.cat,note:r.note||"",date:r.date,ts:Number(r.ts)})),custom:(c&&c.custom)||[]};
+}
+async function flush(){
+  if(flushing||!pending.length||!navigator.onLine)return;
+  flushing=true;
+  try{
+    while(pending.length){
+      const op=pending[0];
+      if(op.type==="add"){
+        let n=0;while(n<pending.length&&n<500&&pending[n].type==="add")n++;
+        const rows=pending.slice(0,n).map(o=>({user_id:user.id,id:o.row.id,amount:o.row.amount,cat:o.row.cat,note:o.row.note||"",date:o.row.date,ts:o.row.ts}));
+        const {error}=await sb.from("expenses").upsert(rows,{onConflict:"user_id,id"});
+        if(error)throw error;
+        pending.splice(0,n);
+      }else{
+        const {error}=await sb.from("expenses").delete().eq("id",op.id);
+        if(error)throw error;
+        pending.shift();
+      }
+      savePending();
+    }
+  }catch(e){console.warn("Synchronizace selhala",e)}
+  finally{flushing=false;updateSync()}
+}
+async function refresh(){
+  await flush();
+  try{
+    const d=await loadAll();
+    expenses=applyPending(d.expenses);customCats=d.custom;saveCache();render();renderCats();
+  }catch(e){console.warn("Načtení selhalo",e);updateSync()}
+}
+function addLocal(e){
+  expenses.push(e);pending.push({type:"add",row:e});savePending();saveCache();render();flush();
+}
+function removeLocal(id){
+  const i=pending.findIndex(o=>o.type==="add"&&o.row.id===id);
+  if(i>=0)pending.splice(i,1);else pending.push({type:"del",id});
+  expenses=expenses.filter(e=>e.id!==id);savePending();saveCache();render();flush();
+}
+async function saveCustom(list){
+  customCats=list;saveCache();renderCats();render();
+  const {error}=await sb.from("categories").upsert({user_id:user.id,custom:list});
+  if(error)toast("Kategorie se uloží, až budeš online.",false);
+}
+function importList(list,custom){
+  const have=new Set(expenses.map(e=>e.id));
+  const add=list.filter(e=>validExpense(e)&&!have.has(e.id)).map(e=>({id:e.id,amount:Math.round(e.amount*100)/100,cat:e.cat,note:String(e.note||"").slice(0,200),date:e.date,ts:Number(e.ts)||Date.now()}));
+  add.forEach(e=>{expenses.push(e);pending.push({type:"add",row:e})});
+  const cids=new Set(customCats.map(c=>c.id));
+  const newCats=(custom||[]).filter(c=>c&&c.id&&c.name&&!cids.has(c.id));
+  savePending();saveCache();render();flush();
+  if(newCats.length)saveCustom(customCats.concat(newCats));
+  return add.length;
+}
+
+/* ---------- Zápis ---------- */
 function renderCats(){
   const ok=parseAmount()!==null;
   const box=$("cats");box.innerHTML="";
@@ -207,36 +337,30 @@ function renderCats(){
   $("hint").textContent=ok?"Teď klepni na kategorii.":"Napiš částku a klepni na kategorii – hned se uloží.";
 }
 let lastAdded=null,toastTimer=null;
-async function addExpense(catId){
+function addExpense(catId){
   const amount=parseAmount();if(amount===null)return;
   const date=$("date").value||today();
-  const e={id:"e"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),amount,cat:catId,note:$("note").value.trim(),date,ts:Date.now()};
-  try{
-    await store.add(e);
-    lastAdded=e.id;
-    $("amount").value="";$("note").value="";$("date").value=today();
-    viewMonth=date.slice(0,7);showAll=false;
-    renderCats();render();
-    toast("Uloženo: "+fmt(amount)+" – "+catById(catId).name,true);
-  }catch(err){toast("Neuloženo – zkontroluj připojení a zkus to znovu.",false)}
+  const e={id:newId(),amount,cat:catId,note:$("note").value.trim(),date,ts:Date.now()};
+  addLocal(e);lastAdded=e.id;
+  $("amount").value="";$("note").value="";$("date").value=today();
+  viewMonth=date.slice(0,7);showAll=false;renderCats();render();
+  toast("Uloženo: "+fmt(amount)+" – "+catById(catId).name,true);
 }
 function toast(msg,undo){
   $("toastMsg").textContent=msg;$("undo").style.display=undo?"":"none";
   $("toast").classList.add("show");clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>$("toast").classList.remove("show"),4000);
 }
-$("undo").onclick=async()=>{if(lastAdded){await store.remove(lastAdded);lastAdded=null}$("toast").classList.remove("show")};
-async function addCategory(){
+$("undo").onclick=()=>{if(lastAdded){removeLocal(lastAdded);lastAdded=null}$("toast").classList.remove("show")};
+function addCategory(){
   const name=(prompt("Název nové kategorie:")||"").trim();if(!name)return;
   const ico=(prompt("Emoji pro kategorii (nepovinné):","🏷️")||"🏷️").trim().slice(0,4);
-  const id="c"+Date.now().toString(36);
-  const list=customCats.concat([{id,name:name.slice(0,20),ico,c:EXTRA_COLORS[customCats.length%EXTRA_COLORS.length]}]);
-  try{await store.saveCustom(list)}catch(e){toast("Kategorii se nepodařilo uložit.",false)}
+  saveCustom(customCats.concat([{id:"c"+Date.now().toString(36),name:name.slice(0,20),ico,c:EXTRA_COLORS[customCats.length%EXTRA_COLORS.length]}]));
 }
 $("amount").addEventListener("input",renderCats);
 $("amount").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 
-/* ---------- Overview ---------- */
+/* ---------- Přehled ---------- */
 function sumBy(month){
   const m={};let total=0;
   expenses.forEach(e=>{if(e.date.slice(0,7)===month){m[e.cat]=(m[e.cat]||0)+e.amount;total+=e.amount}});
@@ -262,7 +386,6 @@ function render(){
       li.innerHTML='<span class="sw"></span><span class="n"></span><span class="v"></span>';
       li.children[1].textContent=c.ico+" "+c.name;li.children[2].innerHTML=fmt(v)+`<span class="p">${Math.round(v/total*100)} %</span>`;lg.appendChild(li)});
   }
-  // trend
   const months=[];for(let i=5;i>=0;i--)months.push(shiftMonth(viewMonth>cur?cur:viewMonth,-i));
   const totals=months.map(k=>sumBy(k).total),max=Math.max(...totals,1);
   const tr=$("trend");tr.innerHTML="";
@@ -270,7 +393,6 @@ function render(){
     b.setAttribute("aria-label",monthName(k)+": "+fmt(totals[i]));
     b.innerHTML=`<span class="amt">${totals[i]?Math.round(totals[i]).toLocaleString("cs-CZ"):""}</span><span class="bar" style="height:${totals[i]/max*100*0.78}%"></span><span class="lbl">${monthName(k,true)}</span>`;
     b.onclick=()=>{viewMonth=k;showAll=false;render()};tr.appendChild(b)});
-  // list
   const items=expenses.filter(e=>e.date.slice(0,7)===viewMonth).sort((a,b)=>b.date.localeCompare(a.date)||b.ts-a.ts);
   const ul=$("list");ul.innerHTML="";
   if(!items.length)ul.innerHTML='<li style="display:block" class="empty">Žádné záznamy.</li>';
@@ -280,7 +402,7 @@ function render(){
     li.querySelector(".t").textContent=c.name;
     const [y,mo,d]=e.date.split("-");li.querySelector(".d").textContent=Number(d)+". "+Number(mo)+"."+(e.note?" – "+e.note:"");
     li.querySelector(".a").textContent=fmt(e.amount);
-    li.querySelector(".del").onclick=async()=>{if(confirm("Smazat "+fmt(e.amount)+" ("+c.name+")?")){try{await store.remove(e.id)}catch(er){toast("Smazání se nepovedlo.",false)}}};
+    li.querySelector(".del").onclick=()=>{if(confirm("Smazat "+fmt(e.amount)+" ("+c.name+")?"))removeLocal(e.id)};
     ul.appendChild(li)});
   const more=$("listMore");more.innerHTML="";
   if(!showAll&&items.length>15){const b=document.createElement("button");b.className="show-all";b.textContent="Zobrazit všech "+items.length;b.onclick=()=>{showAll=true;render()};more.appendChild(b)}
@@ -288,35 +410,114 @@ function render(){
 $("prev").onclick=()=>{viewMonth=shiftMonth(viewMonth,-1);showAll=false;render()};
 $("next").onclick=()=>{viewMonth=shiftMonth(viewMonth,1);showAll=false;render()};
 
-/* ---------- Backup ---------- */
+/* ---------- Záloha a přenos starých dat ---------- */
 $("exportBtn").onclick=()=>{
-  const data=JSON.stringify({app:"utraty",version:1,exported:new Date().toISOString(),expenses,custom:customCats},null,1);
+  const data=JSON.stringify({app:"prachy",version:2,exported:new Date().toISOString(),expenses,custom:customCats},null,1);
   const url=URL.createObjectURL(new Blob([data],{type:"application/json"}));
-  const a=document.createElement("a");a.href=url;a.download="utraty-zaloha-"+today()+".json";
+  const a=document.createElement("a");a.href=url;a.download="prachy-zaloha-"+today()+".json";
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 };
 $("importBtn").onclick=()=>$("importFile").click();
 $("importFile").onchange=async ev=>{
   const f=ev.target.files[0];ev.target.value="";if(!f)return;
-  try{
-    const d=JSON.parse(await f.text());
-    if(!Array.isArray(d.expenses))throw 0;
-    const s=JSON.parse(localStorage.getItem(LS_KEY)||'{"expenses":[],"custom":[]}');
-    const ids=new Set(s.expenses.map(e=>e.id));
-    const add=d.expenses.filter(e=>e&&e.id&&!ids.has(e.id)&&typeof e.amount==="number"&&/^\d{4}-\d{2}-\d{2}$/.test(e.date));
-    s.expenses=s.expenses.concat(add);
-    const cids=new Set(s.custom.map(c=>c.id));
-    s.custom=s.custom.concat((d.custom||[]).filter(c=>c&&c.id&&!cids.has(c.id)));
-    localStorage.setItem(LS_KEY,JSON.stringify(s));
-    store.start();toast("Nahráno "+add.length+" nových záznamů.",false);
+  try{const d=JSON.parse(await f.text());if(!Array.isArray(d.expenses))throw 0;
+    toast("Nahráno "+importList(d.expenses,d.custom)+" nových záznamů.",false);
   }catch(e){toast("Tohle není platný soubor se zálohou.",false)}
 };
+function checkOldData(){
+  const old=lsGet("utraty-v1",null);
+  const n=old&&Array.isArray(old.expenses)?old.expenses.length:0;
+  if(n&&!lsGet("prachy-migrated-"+user.id,false)){
+    $("migrateText").textContent="V tomhle prohlížeči máš "+n+" útrat ze starší verze bez účtu. Chceš je přenést do svého účtu?";
+    $("migrate").hidden=false;
+    $("migrateBtn").onclick=()=>{const k=importList(old.expenses,old.custom);lsSet("prachy-migrated-"+user.id,true);$("migrate").hidden=true;toast("Přeneseno "+k+" útrat.",false)};
+  }
+}
 
-/* ---------- Boot ---------- */
-$("date").value=today();
-store=lsStore();
-store.start();
-renderCats();
+/* ---------- Přihlášení ---------- */
+let mode="login"; // login | signup | reset | newpass
+function setMode(m){
+  mode=m;
+  $("passField").hidden=(m==="reset");
+  $("email").closest(".field").hidden=(m==="newpass");
+  $("password").autocomplete=(m==="login")?"current-password":"new-password";
+  $("authBtn").textContent={login:"Přihlásit se",signup:"Vytvořit účet",reset:"Poslat odkaz na nové heslo",newpass:"Uložit nové heslo"}[m];
+  $("toggleMode").textContent=m==="login"?"Nemám účet – vytvořit":"Zpět na přihlášení";
+  $("forgot").hidden=(m!=="login");
+  $("passField").querySelector("span").textContent=m==="newpass"?"Nové heslo":(m==="signup"?"Heslo (aspoň 6 znaků)":"Heslo");
+}
+function authMsg(text,err){const el=$("authMsg");el.textContent=text;el.className="msg"+(err?" err":"");el.hidden=!text}
+function czError(e){
+  const m=(e&&e.message||"").toLowerCase();
+  if(m.includes("invalid login"))return "Špatný e-mail nebo heslo.";
+  if(m.includes("not confirmed"))return "Nejdřív potvrď e-mail – klikni na odkaz, který ti přišel.";
+  if(m.includes("already registered")||m.includes("already been registered"))return "Tenhle e-mail už má účet. Přihlas se.";
+  if(m.includes("password")&&m.includes("6"))return "Heslo musí mít aspoň 6 znaků.";
+  if(m.includes("rate limit")||m.includes("too many"))return "Příliš mnoho pokusů. Zkus to za chvíli.";
+  if(m.includes("fetch")||m.includes("network"))return "Nejde se připojit k internetu.";
+  return "Něco se nepovedlo: "+(e&&e.message||"neznámá chyba");
+}
+$("toggleMode").onclick=()=>{setMode(mode==="login"?"signup":"login");authMsg("")};
+$("forgot").onclick=()=>{setMode("reset");authMsg("")};
+$("authForm").onsubmit=async ev=>{
+  ev.preventDefault();
+  const email=$("email").value.trim(),password=$("password").value;
+  if(mode!=="newpass"&&!/^\S+@\S+\.\S+$/.test(email))return authMsg("Zadej platný e-mail.",true);
+  if((mode==="signup"||mode==="newpass"||mode==="login")&&password.length<6)return authMsg("Heslo musí mít aspoň 6 znaků.",true);
+  $("authBtn").disabled=true;authMsg("");
+  try{
+    if(mode==="login"){
+      const {error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;
+    }else if(mode==="signup"){
+      const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});if(error)throw error;
+      if(!data.session){setMode("login");authMsg("Hotovo! Poslali jsme ti e-mail. Klikni na odkaz v něm a pak se tu přihlas.")}
+    }else if(mode==="reset"){
+      const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});if(error)throw error;
+      setMode("login");authMsg("Pokud k e-mailu existuje účet, přišel ti odkaz na nastavení nového hesla.");
+    }else if(mode==="newpass"){
+      const {error}=await sb.auth.updateUser({password});if(error)throw error;
+      authMsg("");startApp((await sb.auth.getUser()).data.user);
+    }
+  }catch(e){authMsg(czError(e),true)}
+  finally{$("authBtn").disabled=false}
+};
+$("logout").onclick=async()=>{
+  if(pending.length&&!confirm("Některé útraty se ještě neodeslaly a po odhlášení se ztratí. Opravdu odhlásit?"))return;
+  await sb.auth.signOut();
+};
+
+function showAuth(){user=null;$("appView").hidden=true;$("authView").hidden=false;setMode("login")}
+function startApp(u){
+  if(!u)return showAuth();
+  if(user&&user.id===u.id&&!$("appView").hidden)return;
+  user=u;$("authView").hidden=true;$("appView").hidden=false;
+  $("who").textContent=u.email||"";
+  pending=lsGet(kPending(),[]);
+  const c=lsGet(kCache(),{expenses:[],custom:[]});
+  expenses=applyPending(c.expenses||[]);customCats=c.custom||[];
+  $("date").value=today();updateSync();renderCats();render();checkOldData();refresh();
+}
+
+/* ---------- Start ---------- */
+(async()=>{
+  if(!window.supabase){
+    $("authView").hidden=false;authMsg("Aplikaci se nepodařilo načíst. Zkontroluj připojení k internetu a obnov stránku.",true);
+    $("authForm").hidden=true;return;
+  }
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  sb.auth.onAuthStateChange((event,session)=>{
+    setTimeout(()=>{
+      if(event==="PASSWORD_RECOVERY"){$("appView").hidden=true;$("authView").hidden=false;setMode("newpass");authMsg("Zadej nové heslo.");return}
+      if(event==="SIGNED_OUT")return showAuth();
+      if(session&&session.user&&mode!=="newpass")startApp(session.user);
+    },0);
+  });
+  const {data}=await sb.auth.getSession();
+  if(data.session&&mode!=="newpass")startApp(data.session.user);else if(!data.session)showAuth();
+})();
+window.addEventListener("online",()=>{if(user)refresh()});
+window.addEventListener("offline",updateSync);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&user)refresh()});
 if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 </script>
 </body>

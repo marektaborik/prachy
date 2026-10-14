@@ -1,6 +1,7 @@
 {
-  "name": "Útraty",
-  "short_name": "Útraty",
+  "name": "Prachy",
+  "short_name": "Prachy",
+  "description": "Zapiš útratu dvěma ťuknutími a sleduj, kam ti mizí peníze.",
   "lang": "cs",
   "start_url": "./",
   "scope": "./",
